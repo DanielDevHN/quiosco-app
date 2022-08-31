@@ -6,6 +6,31 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+//Modelos de la BD
+model Producto {
+  id Int @id @default(autoincrement())
+  nombre String
+  precio Float
+  imagen String
+  categoria Categoria @relation( fields: [categoriaId], references: [id])
+  categoriaId Int
+}
+
+model Categoria {
+  id Int @id @default(autoincrement())
+  nombre String
+  icono String
+  productos Producto[]
+}
+
+model Orden {
+  id Int @id @default(autoincrement())
+  nombre String
+  fecha String
+  total Float
+  pedido Json
 }
