@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { formatearDinero } from '../helpers'
+import useQuiosco from "../hooks/useQuiosco";
 
 
 const Producto = ({ producto }) => {
+  const { handleSetProducto, handleChangeModal } = useQuiosco();
   const { nombre, imagen, precio } = producto;
 
   return (
@@ -18,6 +20,18 @@ const Producto = ({ producto }) => {
         <p className="mt-5 font-black text-4xl text-amber-500">
             {formatearDinero(precio)}
         </p>
+
+        <button
+          type="button"
+          className="bg-indigo-600 hover:bg-indigo-800 
+          w-full mt-5 p-3 text-white font-bold uppercase"
+          onClick={() => {
+            handleSetProducto(producto)
+            handleChangeModal()
+          }}
+        >
+          Agregar
+        </button>
       </div>
     </div>
   );
