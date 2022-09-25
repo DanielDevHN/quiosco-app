@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from 'react'
 import axios from 'axios'
-import Categoria from '../components/Categoria'
+
 
 const QuioscoContext = createContext()
 
@@ -18,9 +18,13 @@ const QuioscoProvider = ({children}) => {
         obtenerCategorias()
     }, [])
 
+    useEffect(() => {
+        setCategoriaActual(categorias[0])
+    }, [categorias])
+
     const handleClickCategoria = id => {
         const categoria = categorias.filter( cate => cate.id === id)
-        console.log(categoria)
+        setCategoriaActual(categoria[0])
     }
 
     return(
