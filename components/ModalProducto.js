@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import useQuiosco from "../hooks/useQuiosco";
 import { formatearDinero } from "../helpers";
 
 const ModalProducto = () => {
-  const { producto, handleChangeModal, handleAddPedido } = useQuiosco();
+  const { producto, handleChangeModal, handleAddPedido, pedido } = useQuiosco();
   const [cantidad, setCantidad] = useState(1);
+  const [edicion, setEdicion] = useState(false);
+
+  useEffect(() => {
+    //comprobar si el modal esta en el pedido
+    if (pedido.some((pedidoState) => pedidoState.id === producto.id)) {
+      const productoEdicion = pedido.find(
+        (pedidoState) => pedidoState.id === producto.id
+      );
+      setCantidad(productoEdicion.cantidad);
+      setEdicion(true);
+    }
+  }, [producto, pedido]);
 
   return (
     <div className="md:flex gap-10">
@@ -46,8 +58,8 @@ const ModalProducto = () => {
           <button
             type="button"
             onClick={() => {
-                if (cantidad <= 1) return
-                setCantidad(cantidad - 1);
+              if (cantidad <= 1) return;
+              setCantidad(cantidad - 1);
             }}
           >
             <svg
@@ -71,8 +83,8 @@ const ModalProducto = () => {
           <button
             type="button"
             onClick={() => {
-                if (cantidad >= 5) return
-                setCantidad(cantidad + 1);
+              if (cantidad >= 5) return;
+              setCantidad(cantidad + 1);
             }}
           >
             <svg
@@ -92,15 +104,15 @@ const ModalProducto = () => {
           </button>
         </div>
         <button
-            type="button"
-            className="bg-indigo-600 hover:bg-indigo-800 px-5 
+          type="button"
+          className="bg-indigo-600 hover:bg-indigo-800 px-5 
             py-3 text-white font-bold uppercase mt-5 border rounded-md"
-            onClick={() => {
-                handleAddPedido({...producto, cantidad})
-                handleChangeModal()
-            }}
+          onClick={() => {
+            handleAddPedido({ ...producto, cantidad });
+            handleChangeModal();
+          }}
         >
-            Añadir al Pedido
+          {edicion ? "Actualizar pedido" : "Agregar al pedido"}
         </button>
       </div>
     </div>
