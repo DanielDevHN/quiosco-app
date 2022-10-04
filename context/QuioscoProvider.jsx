@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const QuioscoContext = createContext()
 
-const QuioscoProvider = ({children}) => {
+const QuioscoProvider = ({ children }) => {
 
     const [categorias, setCategorias] = useState([])
     const [categoriaActual, setCategoriaActual] = useState({})
@@ -26,7 +26,7 @@ const QuioscoProvider = ({children}) => {
     }, [categorias])
 
     const handleClickCategoria = id => {
-        const categoria = categorias.filter( cate => cate.id === id)
+        const categoria = categorias.filter(cate => cate.id === id)
         setCategoriaActual(categoria[0])
     }
 
@@ -38,12 +38,18 @@ const QuioscoProvider = ({children}) => {
         setModal(!modal)
     }
 
-    const handleAddPedido = ({categoriaId, imagen, ...producto}) => 
-    {
-        setPedido([...pedido, producto])
+    const handleAddPedido = ({ categoriaId, imagen, ...producto }) => {
+        if (pedido.some(productoState => productoState.id === producto.id)) {
+            const pedidoActualizado = pedido.map(productoState => productoState.id ===
+                producto.id ? producto : productoState)
+            setPedido(pedidoActualizado)
+        } else {
+            setPedido([...pedido, producto])
+        }
+        setModal(false)
     }
 
-    return(
+    return (
         <QuioscoContext.Provider
             value={{
                 categorias,
@@ -53,7 +59,8 @@ const QuioscoProvider = ({children}) => {
                 handleSetProducto,
                 modal,
                 handleChangeModal,
-                handleAddPedido
+                handleAddPedido,
+                pedido
             }}
         >
             {children}
