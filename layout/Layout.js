@@ -1,11 +1,12 @@
 import Head from "next/head";
 import Modal from "react-modal";
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer } from "react-toastify";
 import Sidebar from "../components/Sidebar";
+import NavBar from "../components/NavBar";
 import ModalProducto from "../components/ModalProducto";
 import useQuiosco from "../hooks/useQuiosco";
 
-import 'react-toastify/dist/ReactToastify.css'
+import "react-toastify/dist/ReactToastify.css";
 
 const customStyles = {
   content: {
@@ -18,10 +19,10 @@ const customStyles = {
   },
 };
 
-Modal.setAppElement('#__next');
+Modal.setAppElement("#__next");
 
 export default function Layout({ children, pagina }) {
-    const { modal } = useQuiosco();
+  const { modal } = useQuiosco();
   return (
     <>
       <Head>
@@ -35,19 +36,19 @@ export default function Layout({ children, pagina }) {
         </aside>
 
         <main className="md:w-8/12 xl:w-3/4 2xl:w-4/5 h-screen overflow-y-scroll">
-          <div className="p-10">{children}</div>
+          <div className="p-10">
+            <NavBar />
+            {children}
+          </div>
         </main>
       </div>
       {modal && (
-        <Modal
-            isOpen={modal}
-            style={customStyles}
-        >
-            <ModalProducto />
+        <Modal isOpen={modal} style={customStyles}>
+          <ModalProducto />
         </Modal>
       )}
 
-        <ToastContainer />
+      <ToastContainer />
     </>
   );
 }
