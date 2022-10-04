@@ -7,7 +7,23 @@ const pasos = [
 ];
 
 const NavBar = () => {
+
   const router = useRouter();
+
+  const calcularProgreso = () => {
+    let progreso
+    if (router.pathname === "/") {
+        progreso = 10
+        }
+    if (router.pathname === "/resumen") {
+        progreso = 50
+        }
+    if (router.pathname === "/total") {
+        progreso = 100
+        }
+    return progreso
+
+  };
 
   return (
     <>
@@ -23,6 +39,14 @@ const NavBar = () => {
             {paso.nombre}
           </button>
         ))}
+      </div>
+
+      <div className="bg-gray-100 mb-10">
+        <div
+          className="rounded-full bg-amber-500 text-xs 
+        leading-none h-2 text-center text-white"
+            style={{ width:`${calcularProgreso()}%` }}
+        ></div>
       </div>
     </>
   );
